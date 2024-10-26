@@ -1,7 +1,5 @@
 # coding=utf-8
 import json
-
-import argparse
 import datetime
 import random
 import os
@@ -16,8 +14,6 @@ IS_PY3 = True
 
 API_KEY = 'eArDHkaeEEHc4bx9fZGjzUDn'
 SECRET_KEY = 'pZOtzJ2tDXupCjuvh4M0a1dEvFYjsYxz'
-
-TEXT = "欢迎使用百度语音合成。"
 
 # 发音人选择, 基础音库：0为度小美，1为度小宇，3为度逍遥，4为度丫丫，
 # 精品音库：5为度小娇，103为度米朵，106为度博文，110为度小童，111为度小萌，默认为度小美 
@@ -35,16 +31,12 @@ FORMATS = {3: "mp3", 4: "pcm", 5: "pcm", 6: "wav"}
 FORMAT = FORMATS[AUE]
 
 CUID = "123456PYTHON"
-
 TTS_URL = 'http://tsn.baidu.com/text2audio'
-
 
 class DemoError(Exception):
     pass
 
-
 """  TOKEN start """
-
 TOKEN_URL = 'http://aip.baidubce.com/oauth/2.0/token'
 SCOPE = 'audio_tts_post'  # 有此scope表示有tts能力，没有请在网页里勾选
 
@@ -74,13 +66,7 @@ def fetch_token():
         raise DemoError('MAYBE API_KEY or SECRET_KEY not correct: access_token or scope not found in token response')
 
 
-def get_audio_from_text(text):
-    parser = argparse.ArgumentParser(description='Text to Speech conversion using Baidu API.')
-    parser.add_argument('--out', type=str, default='result.mp3', help='Output MP3 filename')
-    parser.add_argument('--input', type=str, default='input.txt', help='Input txt filename')
-
-    args = parser.parse_args()
-
+def generate_audio_from_text(text):
     token = fetch_token()
     tex = quote_plus(text)  # 此处TEXT需要两次urlencode
     params = {'tok': token, 'tex': tex, 'per': PER, 'spd': SPD, 'pit': PIT, 'vol': VOL, 'aue': AUE, 'cuid': CUID,
@@ -91,11 +77,11 @@ def get_audio_from_text(text):
     try:
         f = urlopen(req)
         result_str = f.read()
-    except  URLError as err:
+    except URLError as err:
         return ""
 
     random_audio_name = '{0:%Y%m%d%H%M%S%f}'.format(datetime.datetime.now()) + ''.join([str(random.randint(1,10)) for i in range(5)])
-    audio_path = os.path.join("temp", "image", random_audio_name + ".mp3")
+    audio_path = os.path.join("temp", "audio", random_audio_name + ".mp3")
     with open(audio_path, 'wb') as of:
         of.write(result_str)
     return audio_path

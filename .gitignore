@@ -1,4 +1,4 @@
-model/.
+model/
 workspace
 core/__pycache__
 utils/__pycache__
