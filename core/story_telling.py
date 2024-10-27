@@ -99,7 +99,7 @@ class VisualStorytelling(Agent):
         response.extend(rsp)
         new_messages.extend(rsp)
 
-        new_messages.append(Message('user', '请根据以上故事内容的场景(忽略上面内容的4个选项)生成一张图片吧!'))
+        new_messages.append(Message('user', '请根据以上故事内容的场景生成一组图片吧!'))
         for rsp in self.painting_agent.run(new_messages, lang=lang, **kwargs):
             yield response + rsp
 
