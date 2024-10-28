@@ -6,10 +6,13 @@ import openvino.properties as props
 import openvino.properties.hint as hints
 import openvino.properties.streams as streams
 
+from pathlib import Path
+from modelscope import snapshot_download
 from typing import Dict, Iterator, List, Optional, Union
 from core.prompt import story_telling_prompt, painting_prompt
-from core.text2image import generate_image_from_text
+from core.text2image_icm import generate_image_from_text
 from core.text2audio import generate_audio_from_text
+from core.image2movie import generate_movie_from_text
 from qwen_agent.tools.base import BaseTool, register_tool
 from qwen_agent.agents import Assistant
 from qwen_agent import Agent
@@ -19,9 +22,11 @@ from qwen_agent.llm.schema import ContentItem, Message
 from qwen_agent.tools import BaseTool
 
 
-llm_model_id = "Qwen/Qwen2-7B-Instruct"
+llm_model_id = "snake7gun/Qwen2-7B-Instruct-int4-ov"
 llm_local_path  = "model/snake7gun/Qwen2-7B-Instruct-int4-ov"
 
+if not Path(llm_local_path).exists():
+    model_dir = snapshot_download(llm_model_id, cache_dir="./model/")
 
 @register_tool("image_generation")
 class ImageGeneration(BaseTool):

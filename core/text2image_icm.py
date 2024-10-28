@@ -5,7 +5,12 @@ import os
 from optimum.intel import OVLatentConsistencyModelPipeline
 from pathlib import Path
 
-ov_pipeline = OVLatentConsistencyModelPipeline.from_pretrained("model/lcm", export=False, compile=False)
+if not Path("model/lcm").exists():
+    ov_pipeline = OVLatentConsistencyModelPipeline.from_pretrained("OpenVINO/LCM_Dreamshaper_v7-int8-ov", height=512, width=512, compile=False)
+    ov_pipeline.save_pretrained("model/lcm")
+else:
+    ov_pipeline = OVLatentConsistencyModelPipeline.from_pretrained("model/lcm", export=False, compile=False)
+
 ov_pipeline.reshape(batch_size=1, height=512, width=512, num_images_per_prompt=1)
 ov_pipeline.to("GPU")
 ov_pipeline.compile()
