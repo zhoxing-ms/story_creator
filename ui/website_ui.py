@@ -10,6 +10,7 @@ from qwen_agent.gui.utils import convert_fncall_to_text, convert_history_to_chat
 from qwen_agent.llm.schema import CONTENT, FILE, IMAGE, NAME, ROLE, USER, Message
 from qwen_agent.log import logger
 from qwen_agent.utils.utils import print_traceback
+from core.image2movie import generate_movie_from_scenes
 
 
 class WebUI:
@@ -133,6 +134,15 @@ class WebUI:
                     input = mgr.MultimodalInput(
                         placeholder=self.input_placeholder,
                         sources=["microphone", "upload"]
+                    )
+
+                    generate_button = gr.Button("生成故事影片")
+
+                    # 添加点击按钮时的回调函数
+                    generate_button.click(
+                        fn=generate_movie_from_scenes,  # 回调函数
+                        inputs=[],  # 可根据需要传入参数
+                        outputs=[],  # 可根据需要输出
                     )
 
                 with gr.Column(scale=1):

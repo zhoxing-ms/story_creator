@@ -1,5 +1,5 @@
 from ui.website_ui import WebUI
-from core.story_telling import story_telling_bot
+# from core.story_telling import story_telling_bot
 
 chatbot_config = {
     'prompt.suggestions': [
@@ -10,8 +10,16 @@ chatbot_config = {
     'agent.avatar': "resource/avatar.png"
 }
 
+# 初始化WebUI实例时传入这个DummyAgent
+class DummyAgent:
+    def __init__(self):
+        self.name = "Placeholder Agent"
+        self.description = "This is a dummy agent for UI preview."
+        self.function_map = None
+
+
 if __name__ == '__main__':
     WebUI(
-        story_telling_bot,
+        agent=DummyAgent(),
         chatbot_config=chatbot_config,
     ).run()
