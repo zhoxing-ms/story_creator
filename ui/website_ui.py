@@ -10,6 +10,7 @@ from qwen_agent.gui.utils import convert_fncall_to_text, convert_history_to_chat
 from qwen_agent.llm.schema import CONTENT, FILE, IMAGE, NAME, ROLE, USER, Message
 from qwen_agent.log import logger
 from qwen_agent.utils.utils import print_traceback
+from core.image2movie import generate_movie_from_materials
 
 
 class WebUI:
@@ -148,6 +149,22 @@ class WebUI:
                     agent_info_block = self._create_agent_info_block()
 
                     agent_plugins_block = self._create_agent_plugins_block()
+
+                    generate_story_button = gr.Button(
+                        value="生成完整故事",
+                        variant="primary",
+                        size="lg"
+                    )
+                    
+                    story_status = gr.Textbox(
+                        label="生成状态",
+                        interactive=False
+                    )
+                    
+                    generate_story_button.click(
+                        fn=self.generate_story,
+                        outputs=[story_status],
+                    )
 
                     if self.prompt_suggestions:
                         gr.Examples(
@@ -349,3 +366,17 @@ class WebUI:
                 choices=[],
                 interactive=False,
             )
+
+    # 在 WebUI 类中添加新的方法
+    def generate_story(self):
+        """
+        处理生成完整故事按钮的点击事件
+        """
+        try:
+            generate_movie_from_materials()
+            return "故事生成成功！视频已保存到 temp/movie 目录。"
+        except Exception as e:
+            print_traceback()
+            return f"生成失败：{str(e)}"
+
+
