@@ -1,9 +1,4 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
-llama-index
-llama-index-readers-file
-llama-index-llms-openvino==0.2.2
-llama-index-embeddings-openvino==0.2.1
-llama-index-embeddings-huggingface==0.2.3
 
 optimum-intel==1.20.0
 transformers==4.45
@@ -34,3 +29,4 @@ ipykernel>=5.0
 ipython>=7.16.3
 
 moviepy
+accelerate

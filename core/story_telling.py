@@ -45,6 +45,15 @@ class AudioGeneration(BaseTool):
     def call(self, params: str, **kwargs) -> str:
         audio_desc = json5.loads(params)["audio_desc"]
         return generate_audio_from_text(audio_desc)
+    
+@register_tool("movie_generation")
+class MovieGeneration(BaseTool):
+    description = "电影生成工具，根据输入的文本内容生成对应的音频并返回音频的本地保存路径。"
+    parameters = [{"name": "audio_desc", "type": "string", "description": "需要生成对应音频的文本内容", "required": True}]
+
+    def call(self, params: str, **kwargs) -> str:
+        audio_desc = json5.loads(params)["audio_desc"]
+        return generate_audio_from_text(audio_desc)
 
 ov_config = {
     hints.performance_mode(): hints.PerformanceMode.LATENCY, 
