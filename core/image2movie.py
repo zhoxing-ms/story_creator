@@ -45,62 +45,45 @@ def generate_movie_from_scenes(scenes):
     final_video.write_videofile(movie_path, codec="libx264", fps=24)
 
 
-def generate_movie_from_materials(image_list, vedio_list, text_list):
-    if len(image_list) != len(vedio_list) or len(vedio_list) != len(text_list):
-        return ""
-
-    sceneList = []
-    for image, vedio, text in zip(image_list, vedio_list, text_list):
-        scene = Scene(image, vedio, text)
-        sceneList.append(scene)
-
-    # 定义图片、文字和音频文件
-    generate_movie_from_scenes(sceneList)
+# def generate_movie_from_materials(image_list, vedio_list, text_list):
+#     if len(image_list) != len(vedio_list) or len(vedio_list) != len(text_list):
+#         return ""
+#
+#     sceneList = []
+#     for image, vedio, text in zip(image_list, vedio_list, text_list):
+#         scene = Scene(image, vedio, text)
+#         sceneList.append(scene)
+#
+#     # 定义图片、文字和音频文件
+#     generate_movie_from_scenes(sceneList)
 
 ###########################################################################################################
-def get_unprocessed_files():
+def get_files_list():
     """
-    读取audio和image文件夹中未处理的文件，并标记已读取的文件
+    读取audio和image文件夹中的内容
     返回两个列表：audio_list 和 image_list
     """
-    # 定义记录文件的路径
-    PROCESSED_FILES_RECORD = '../temp/processed_files.json'
-    
-    # 初始化已处理文件集合
-    processed_files = set()
-    
-    # 如果存在记录文件，读取已处理的文件列表
-    if os.path.exists(PROCESSED_FILES_RECORD):
-        with open(PROCESSED_FILES_RECORD, 'r') as f:
-            processed_files = set(json.load(f))
-    
+
     # 初始化结果列表
     audio_list = []
     image_list = []
     
     # 读取audio文件夹
-    audio_path = '../temp/audio/temp'
+    audio_path = 'temp/audio'
     if os.path.exists(audio_path):
         for file in os.listdir(audio_path):
             file_path = os.path.join(audio_path, file)
-            if file_path not in processed_files:
-                audio_list.append(file_path)
-                processed_files.add(file_path)
+            audio_list.append(file_path)
+
     
     # 读取image文件夹
-    image_path = '../temp/image/temp'
+    image_path = 'temp/image'
     if os.path.exists(image_path):
         for file in os.listdir(image_path):
             file_path = os.path.join(image_path, file)
-            if file_path not in processed_files:
-                image_list.append(file_path)
-                processed_files.add(file_path)
+            image_list.append(file_path)
     
-    # 保存更新后的处理记录
-    with open(PROCESSED_FILES_RECORD, 'w') as f:
-        json.dump(list(processed_files), f)
-    
-    return audio_list, image_list
+    return  image_list,audio_list
 
 
 def generate_movie_from_lists(image_list, audio_list):
@@ -116,18 +99,30 @@ def generate_movie_from_lists(image_list, audio_list):
         return ""
 
     scene_list = []
+    # for image, audio in zip(image_list, audio_list):
+    #     scene = Scene(image, audio)
+    #     scene_list.append(scene)
+    #
+    # # 生成视频
+    # generate_movie_from_scenes(scene_list)
     for image, audio in zip(image_list, audio_list):
-        scene = Scene(image, audio)
+        image_path = image
+        audio_path = audio
+        print("Image path:", image_path)
+        print("Audio path:", audio_path)
+        if not os.path.exists(image_path) or not os.path.exists(audio_path):
+            print("File not found:", image_path if not os.path.exists(image_path) else audio_path)
+            continue
+        scene = Scene(image_path, audio_path)
         scene_list.append(scene)
 
-    # 生成视频
     generate_movie_from_scenes(scene_list)
 
 def generate_movie_from_materials():
     """
-    从素材生成视频的旧方法，为保持兼容性重写
+    获取image_list, audio_list，生成视频
     """
-    image_list, audio_list = get_unprocessed_files()
+    image_list, audio_list = get_files_list()
 
     return generate_movie_from_lists(image_list, audio_list)
 

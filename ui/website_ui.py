@@ -92,6 +92,14 @@ class WebUI:
 
             with gr.Row(elem_classes='container'):
                 with gr.Column(scale=4):
+                    video_player = gr.Video(
+                        label="生成的视频",
+                        interactive=False,
+                        visible=True,
+                        height=400,
+                        width=600
+                    )
+
                     chatbot = mgr.Chatbot(value=convert_history_to_chatbot(messages=messages),
                                           avatar_images=[
                                               self.user_config,
@@ -155,15 +163,15 @@ class WebUI:
                         variant="primary",
                         size="lg"
                     )
-                    
+
                     story_status = gr.Textbox(
                         label="生成状态",
                         interactive=False
                     )
-                    
+
                     generate_story_button.click(
                         fn=self.generate_story,
-                        outputs=[story_status],
+                        outputs=[story_status, video_player],
                     )
 
                     if self.prompt_suggestions:
@@ -367,16 +375,27 @@ class WebUI:
                 interactive=False,
             )
 
-    # 在 WebUI 类中添加新的方法
+    def get_latest_video(self):
+        """获取最新生成的视频文件路径"""
+        movie_dir = "temp/movie"
+        if not os.path.exists(movie_dir):
+            return None
+
+        video_files = [os.path.join(movie_dir, f) for f in os.listdir(movie_dir) if f.endswith('.mp4')]
+        if not video_files:
+            return None
+
+        # 按文件修改时间排序，返回最新的视频
+        return max(video_files, key=os.path.getmtime)
+
     def generate_story(self):
-        """
-        处理生成完整故事按钮的点击事件
-        """
+        """处理生成完整故事按钮的点击事件"""
         try:
             generate_movie_from_materials()
-            return "故事生成成功！视频已保存到 temp/movie 目录。"
+            latest_video = self.get_latest_video()
+            if latest_video:
+                return "故事生成成功！", latest_video
+            return "故事生成成功，但未找到视频文件", None
         except Exception as e:
             print_traceback()
-            return f"生成失败：{str(e)}"
-
-
+            return f"生成失败：{str(e)}", None
