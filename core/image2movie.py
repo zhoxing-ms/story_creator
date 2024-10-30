@@ -17,7 +17,6 @@ class Scene:
         self.audio_file = audio_file
 
 
-
 def generate_movie_from_scenes(scenes):
 
     # 视频剪辑列表
@@ -45,19 +44,6 @@ def generate_movie_from_scenes(scenes):
     final_video.write_videofile(movie_path, codec="libx264", fps=24)
 
 
-# def generate_movie_from_materials(image_list, vedio_list, text_list):
-#     if len(image_list) != len(vedio_list) or len(vedio_list) != len(text_list):
-#         return ""
-#
-#     sceneList = []
-#     for image, vedio, text in zip(image_list, vedio_list, text_list):
-#         scene = Scene(image, vedio, text)
-#         sceneList.append(scene)
-#
-#     # 定义图片、文字和音频文件
-#     generate_movie_from_scenes(sceneList)
-
-###########################################################################################################
 def get_files_list():
     """
     读取audio和image文件夹中的内容
@@ -75,7 +61,7 @@ def get_files_list():
             file_path = os.path.join(audio_path, file)
             audio_list.append(file_path)
 
-    
+
     # 读取image文件夹
     image_path = 'temp/image'
     if os.path.exists(image_path):
@@ -83,7 +69,7 @@ def get_files_list():
             file_path = os.path.join(image_path, file)
             image_list.append(file_path)
     
-    return  image_list,audio_list
+    return  image_list, audio_list
 
 
 def generate_movie_from_lists(image_list, audio_list):
@@ -99,17 +85,7 @@ def generate_movie_from_lists(image_list, audio_list):
         return ""
 
     scene_list = []
-    # for image, audio in zip(image_list, audio_list):
-    #     scene = Scene(image, audio)
-    #     scene_list.append(scene)
-    #
-    # # 生成视频
-    # generate_movie_from_scenes(scene_list)
-    for image, audio in zip(image_list, audio_list):
-        image_path = image
-        audio_path = audio
-        print("Image path:", image_path)
-        print("Audio path:", audio_path)
+    for image_path, audio_path in zip(image_list, audio_list):
         if not os.path.exists(image_path) or not os.path.exists(audio_path):
             print("File not found:", image_path if not os.path.exists(image_path) else audio_path)
             continue
@@ -125,5 +101,3 @@ def generate_movie_from_materials():
     image_list, audio_list = get_files_list()
 
     return generate_movie_from_lists(image_list, audio_list)
-
-    
