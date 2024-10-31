@@ -21,8 +21,8 @@ class Scene:
         self.text = text
         self.pinyin_text = self.generate_pinyin(text) if withPinYin == True else " "
 
+    # 将中文文本转换为拼音
     def generate_pinyin(self, text):
-        # 将中文文本转换为拼音
         pinyin_text = ' '.join([' '.join(item) for item in pinyin(text, style=Style.TONE)])
         return pinyin_text
 
@@ -43,7 +43,6 @@ def generate_movie_from_scenes(scenes):
 
         pinyin_clip = TextClip(scene.pinyin_text, font='resource/FZSTK.TTF', fontsize=23, color="white")
         pinyin_clip = pinyin_clip.set_position(("center", 0.51), True) 
-        pinyin_clip.duration = duration
         pinyin_clip.duration = duration
 
         vedio_clip = CompositeVideoClip([image_clip, text_clip, pinyin_clip]).set_audio(audio_clip)
