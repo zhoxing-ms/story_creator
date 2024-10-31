@@ -10,7 +10,7 @@ from qwen_agent.gui.utils import convert_fncall_to_text, convert_history_to_chat
 from qwen_agent.llm.schema import CONTENT, FILE, IMAGE, NAME, ROLE, USER, Message
 from qwen_agent.log import logger
 from qwen_agent.utils.utils import print_traceback
-from core.image2movie import generate_movie_from_materials
+from movie_generator import generate_story_movie
 
 
 class WebUI:
@@ -170,7 +170,7 @@ class WebUI:
                     )
 
                     generate_story_button.click(
-                        fn=self.generate_story,
+                        fn=generate_story_movie(messages),
                         outputs=[story_status, video_player],
                     )
 
@@ -374,28 +374,3 @@ class WebUI:
                 choices=[],
                 interactive=False,
             )
-
-    def get_latest_video(self):
-        """获取最新生成的视频文件路径"""
-        movie_dir = "temp/movie"
-        if not os.path.exists(movie_dir):
-            return None
-
-        video_files = [os.path.join(movie_dir, f) for f in os.listdir(movie_dir) if f.endswith('.mp4')]
-        if not video_files:
-            return None
-
-        # 按文件修改时间排序，返回最新的视频
-        return max(video_files, key=os.path.getmtime)
-
-    def generate_story(self):
-        """处理生成完整故事按钮的点击事件"""
-        try:
-            generate_movie_from_materials()
-            latest_video = self.get_latest_video()
-            if latest_video:
-                return "故事生成成功！", latest_video
-            return "故事生成成功，但未找到视频文件", None
-        except Exception as e:
-            print_traceback()
-            return f"生成失败：{str(e)}", None

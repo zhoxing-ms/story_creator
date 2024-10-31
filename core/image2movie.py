@@ -1,9 +1,8 @@
 import random
 import datetime
 import os
-import json
 
-from moviepy.editor import *
+from moviepy.editor import AudioFileClip, ImageClip, concatenate_videoclips
 
 """
 定义Scene类，对应每一幕，使用图片路径、音频路径、文本字符串创建一个Scene对象。
@@ -42,37 +41,10 @@ def generate_movie_from_scenes(scenes):
     random_movie_name = '{0:%Y%m%d%H%M%S%f}'.format(datetime.datetime.now()) + ''.join([str(random.randint(1,10)) for i in range(5)])
     movie_path = os.path.join("temp", "movie", random_movie_name + ".mp4")
     final_video.write_videofile(movie_path, codec="libx264", fps=24)
+    return movie_path
 
 
-def get_files_list():
-    """
-    读取audio和image文件夹中的内容
-    返回两个列表：audio_list 和 image_list
-    """
-
-    # 初始化结果列表
-    audio_list = []
-    image_list = []
-    
-    # 读取audio文件夹
-    audio_path = 'temp/audio'
-    if os.path.exists(audio_path):
-        for file in os.listdir(audio_path):
-            file_path = os.path.join(audio_path, file)
-            audio_list.append(file_path)
-
-
-    # 读取image文件夹
-    image_path = 'temp/image'
-    if os.path.exists(image_path):
-        for file in os.listdir(image_path):
-            file_path = os.path.join(image_path, file)
-            image_list.append(file_path)
-    
-    return  image_list, audio_list
-
-
-def generate_movie_from_lists(image_list, audio_list):
+def generate_movie_from_resource_list(image_list, audio_list):
     """
     从图片列表和音频列表生成视频
     Args:
@@ -92,12 +64,4 @@ def generate_movie_from_lists(image_list, audio_list):
         scene = Scene(image_path, audio_path)
         scene_list.append(scene)
 
-    generate_movie_from_scenes(scene_list)
-
-def generate_movie_from_materials():
-    """
-    获取image_list, audio_list，生成视频
-    """
-    image_list, audio_list = get_files_list()
-
-    return generate_movie_from_lists(image_list, audio_list)
+    return generate_movie_from_scenes(scene_list)

@@ -42,3 +42,25 @@ painting_prompt = '''
 ## 选项3图
 <img scr="$image_address_3" class="ant-image-img">
 '''
+
+summary_story_prompt = '''
+你是一个故事摘要助手，你需要按照以下规则把历史对话中的故事根据故事的复杂度精练的概括成6-8个步骤:
+1. 你的精炼概括必须包含故事里全部的重要内容，不用过于详细，只需要有核心情节的摘要即可
+2. 你对每个步骤既要有中文描述也要有英文描述，中文描述和英文描述之间用"|"分隔， 比如 "中文描述|英文描述"
+3. 每个步骤的描述必须简洁，中文描述需要20个左右的汉字，英文描述需要20个左右的单词
+4. 最后每个步骤以JSON数组的格式输出，JSON数组中每个元素的内容是该步骤的中文描述和英文描述用"|"拼接的内容
+5. 最终只输出JSON数组即可，不要输出任何其他的内容
+
+基于"龟兔赛跑"这个故事背景的回答样例如下, 你的输出需要参考以下样例必须以JSON数组的格式输出结果:
+```json
+[
+  "兔子飞快地跑着，乌龟慢慢地爬着。|The rabbit ran quickly, while the turtle crawled slowly.",
+  "兔子与乌龟之间距离越来越大。|The distance between the rabbit and the turtle increased.",
+  "兔子觉得比赛太轻松，决定先睡一会。|The rabbit thought the race was easy and decided to take a nap.",
+  "乌龟不停地爬，尽管很累。|The turtle kept crawling despite being very tired.",
+  "乌龟决定不休息，继续前进。|The turtle decided not to rest and kept moving forward.",
+  "兔子醒来时，发现乌龟已接近终点。|When the rabbit woke up, it saw the turtle near the finish line.",
+  "乌龟最终到达终点，赢得比赛。|The turtle eventually reached the finish line and won the race.",
+]
+```
+'''
