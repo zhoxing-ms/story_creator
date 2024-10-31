@@ -53,14 +53,6 @@ summary_story_prompt = '''
 
 基于"龟兔赛跑"这个故事背景的回答样例如下, 你的输出需要参考以下样例必须以JSON数组的格式输出结果:
 ```json
-[
-  "兔子飞快地跑着，乌龟慢慢地爬着。|The rabbit ran quickly, while the turtle crawled slowly.",
-  "兔子与乌龟之间距离越来越大。|The distance between the rabbit and the turtle increased.",
-  "兔子觉得比赛太轻松，决定先睡一会。|The rabbit thought the race was easy and decided to take a nap.",
-  "乌龟不停地爬，尽管很累。|The turtle kept crawling despite being very tired.",
-  "乌龟决定不休息，继续前进。|The turtle decided not to rest and kept moving forward.",
-  "兔子醒来时，发现乌龟已接近终点。|When the rabbit woke up, it saw the turtle near the finish line.",
-  "乌龟最终到达终点，赢得比赛。|The turtle eventually reached the finish line and won the race.",
-]
+[ "兔子飞快地跑着，乌龟慢慢地爬着|The rabbit ran quickly, while the turtle crawled slowly", "兔子与乌龟之间距离越来越大|The distance between the rabbit and the turtle increased", "兔子觉得比赛太轻松，决定先睡一会|The rabbit thought the race was easy and decided to take a nap", "乌龟不停地爬，尽管很累|The turtle kept crawling despite being very tired", "乌龟决定不休息，继续前进|The turtle decided not to rest and kept moving forward", "兔子醒来时，发现乌龟已接近终点|When the rabbit woke up, it saw the turtle near the finish line", "乌龟最终到达终点，赢得比赛|The turtle eventually reached the finish line and won the race" ]
 ```
 '''

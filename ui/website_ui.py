@@ -10,7 +10,7 @@ from qwen_agent.gui.utils import convert_fncall_to_text, convert_history_to_chat
 from qwen_agent.llm.schema import CONTENT, FILE, IMAGE, NAME, ROLE, USER, Message
 from qwen_agent.log import logger
 from qwen_agent.utils.utils import print_traceback
-from movie_generator import generate_story_movie
+from core.movie_generator import generate_story_movie
 
 
 class WebUI:
