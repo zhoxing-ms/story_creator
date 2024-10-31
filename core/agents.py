@@ -65,7 +65,7 @@ story_telling_agent = Assistant(llm=llm_cfg,
                                 name = 'story_telling_agent')
 
 painting_agent = Assistant(llm=llm_cfg, 
-                           function_list=["image_generation", "code_interpreter"],
+                           function_list=["image_generation"],
                            system_message=painting_prompt,
                            name = 'painting_agent')
 

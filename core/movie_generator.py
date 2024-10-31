@@ -14,7 +14,7 @@ def generate_story_movie(messages):
     try:
         # 先生成故事的8个步骤对应的摘要
         if not messages:
-            pass
+            return "暂无故事素材", None
         messages.append(Message('user', '请生成以上完整故事的6-8个步骤的中英文摘要信息吧'))
         summary_response = summary_story_agent.run_nonstream(messages)
         if not summary_response or not summary_response[0] or not summary_response[0]['content']:
