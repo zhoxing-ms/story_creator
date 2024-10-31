@@ -30,3 +30,4 @@ ipython>=7.16.3
 
 moviepy
 accelerate
+pypinyin
