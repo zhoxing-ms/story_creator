@@ -170,7 +170,8 @@ class WebUI:
                     )
 
                     generate_story_button.click(
-                        fn=generate_story_movie(messages),
+                        fn=self.generate_story,
+                        inputs=[history],
                         outputs=[story_status, video_player],
                     )
 
@@ -374,3 +375,6 @@ class WebUI:
                 choices=[],
                 interactive=False,
             )
+
+    def generate_story(self, messages):
+        generate_story_movie(messages)
