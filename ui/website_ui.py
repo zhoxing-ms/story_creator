@@ -377,4 +377,4 @@ class WebUI:
             )
 
     def generate_story(self, messages):
-        generate_story_movie(messages)
+        return generate_story_movie(messages)
