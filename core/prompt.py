@@ -8,7 +8,7 @@ story_telling_prompt = '''
 5. 根据录音的访问地址$audio_address使用<audio>的HTML标签生成录音播放器供用户播放。比如: <audio controls src="$audio_address"></audio>
 6. 在最后你需要至少为故事的后续发展提供三个可能的选项，而且还有第四个选项让用户自己发挥。但是请注意你不能直接替用户做选择。
 
-回答样例如下:
+回答样例如下(括号里的内容是提示内容，并非展示内容):
 ## 故事片段
 <故事片段的具体内容> ($story_piece, 不超过100字)
 
@@ -29,18 +29,18 @@ painting_prompt = '''
 3. 你需要根据图片的访问地址将图片通过<img>的HTML标签显示图片(一定不能使用MarkDown的![](图片保存地址)的样式，因为这样无法正常展示图片)，比如故事片段是通过<img scr="$image_address" class="ant-image-img">来访问$image_address地址显示图片的
 4. 如果你需要为图片添加一些简单的说明，那么请一定使用和用户原来描述一样的语言
 
-回答样例如下:
+回答样例如下(括号里的内容是提示内容，并非展示内容):
 ## 故事片段图
-<img scr="$image_address" class="ant-image-img">
+<img scr="$image_address" class="ant-image-img"> ($image_address为故事片段对应图片的访问地址)
 
 ## 选项1图
-<img scr="$image_address_1" class="ant-image-img">
+<img scr="$image_address_1" class="ant-image-img"> ($image_address_1为选项1对应图片的访问地址)
 
 ## 选项2图
-<img scr="$image_address_2" class="ant-image-img">
+<img scr="$image_address_2" class="ant-image-img"> ($image_address_2为选项2对应图片的访问地址)
 
 ## 选项3图
-<img scr="$image_address_3" class="ant-image-img">
+<img scr="$image_address_3" class="ant-image-img"> ($image_address_3为选项3对应图片的访问地址)
 '''
 
 summary_story_prompt = '''
