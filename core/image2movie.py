@@ -1,5 +1,7 @@
 import random
 import datetime
+import os
+import json
 
 from moviepy.editor import *
 
@@ -10,10 +12,9 @@ from moviepy.editor import *
 
 
 class Scene:
-    def __init__(self, image_file, audio_file, text):
+    def __init__(self, image_file, audio_file):
         self.image_file = image_file
         self.audio_file = audio_file
-        self.text = text
 
 
 def generate_movie_from_scenes(scenes):
@@ -39,18 +40,64 @@ def generate_movie_from_scenes(scenes):
 
     # 导出视频
     random_movie_name = '{0:%Y%m%d%H%M%S%f}'.format(datetime.datetime.now()) + ''.join([str(random.randint(1,10)) for i in range(5)])
-    movie_path = os.path.join("temp", "image", random_movie_name + ".mp4")
+    movie_path = os.path.join("temp", "movie", random_movie_name + ".mp4")
     final_video.write_videofile(movie_path, codec="libx264", fps=24)
 
 
-def generate_movie_from_materials(image_list, vedio_list, text_list):
-    if image_list.length != vedio_list.length or vedio_list.length != text_list.length:
+def get_files_list():
+    """
+    读取audio和image文件夹中的内容
+    返回两个列表：audio_list 和 image_list
+    """
+
+    # 初始化结果列表
+    audio_list = []
+    image_list = []
+    
+    # 读取audio文件夹
+    audio_path = 'temp/audio'
+    if os.path.exists(audio_path):
+        for file in os.listdir(audio_path):
+            file_path = os.path.join(audio_path, file)
+            audio_list.append(file_path)
+
+
+    # 读取image文件夹
+    image_path = 'temp/image'
+    if os.path.exists(image_path):
+        for file in os.listdir(image_path):
+            file_path = os.path.join(image_path, file)
+            image_list.append(file_path)
+    
+    return  image_list, audio_list
+
+
+def generate_movie_from_lists(image_list, audio_list):
+    """
+    从图片列表和音频列表生成视频
+    Args:
+        image_list: 图片文件路径列表
+        audio_list: 音频文件路径列表
+    Returns:
+        str: 生成的视频路径，如果失败则返回空字符串
+    """
+    if len(image_list) != len(audio_list):
         return ""
 
-    sceneList = []
-    for image, vedio, text in zip(image_list, vedio_list, text_list):
-        scene = Scene(image, vedio, text)
-        sceneList.append(scene)
+    scene_list = []
+    for image_path, audio_path in zip(image_list, audio_list):
+        if not os.path.exists(image_path) or not os.path.exists(audio_path):
+            print("File not found:", image_path if not os.path.exists(image_path) else audio_path)
+            continue
+        scene = Scene(image_path, audio_path)
+        scene_list.append(scene)
 
-    # 定义图片、文字和音频文件
-    generate_movie_from_scenes(sceneList)
+    generate_movie_from_scenes(scene_list)
+
+def generate_movie_from_materials():
+    """
+    获取image_list, audio_list，生成视频
+    """
+    image_list, audio_list = get_files_list()
+
+    return generate_movie_from_lists(image_list, audio_list)
